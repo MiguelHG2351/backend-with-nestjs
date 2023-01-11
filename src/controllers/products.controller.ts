@@ -9,12 +9,11 @@ import {
   Body,
   HttpCode,
   HttpStatus,
-  ParseIntPipe,
+  // ParseIntPipe,
 } from '@nestjs/common';
-import { Product } from 'src/entities/product.entity';
-
+import { CreateProductDto, UpdateProductDto } from 'src/dtos/product.dtos';
 import { ProductService } from 'src/services/product.service';
-
+import { ParseIntPipe } from 'src/common/parse-int.pipe';
 @Controller('products')
 export class ProductsController {
   constructor(private productService: ProductService) {}
@@ -45,7 +44,7 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() payload: Product) {
+  create(@Body() payload: CreateProductDto) {
     this.productService.create(payload);
 
     return {
@@ -55,7 +54,10 @@ export class ProductsController {
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() payload: any) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: UpdateProductDto,
+  ) {
     const productUpdated = this.productService.updateOne(id, payload);
 
     return {
@@ -67,17 +69,16 @@ export class ProductsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.ACCEPTED)
-  delete(@Param('id', ParseIntPipe) id: number, @Body() payload: any) {
-    console.log(payload);
-    if (Object.keys(payload).length === 0) {
-      return {};
-    }
+  delete(@Param('id', ParseIntPipe) id: number) {
+    // console.log(payload);
+    // if (Object.keys(payload).length === 0) {
+    //   return {};
+    // }
 
     this.productService.deleteOne(id);
     return {
-      message: 'accion de borrar',
       id,
-      payload,
+      message: 'accion de borrar',
     };
   }
 }

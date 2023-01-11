@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateProductDto, UpdateProductDto } from 'src/dtos/product.dtos';
 import { Product } from 'src/entities/product.entity';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
@@ -10,6 +11,8 @@ export class ProductService {
       name: 'Product 1',
       description: 'bla bla :D',
       price: 122,
+      stock: 11,
+      image: 'otherDate',
     },
   ];
 
@@ -29,7 +32,7 @@ export class ProductService {
     return product;
   }
 
-  create(data: Product) {
+  create(data: CreateProductDto) {
     const newProduct = {
       id: this.products.length + 1,
       ...data,
@@ -38,7 +41,7 @@ export class ProductService {
     return newProduct;
   }
 
-  updateOne(id: number, payload) {
+  updateOne(id: number, payload: UpdateProductDto) {
     const productId = this.products.findIndex((product) => product.id === id);
 
     this.products[productId] = {
