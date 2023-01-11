@@ -1,9 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 @Controller('categories')
 export class CategoriesController {
-  @Get()
-  getCategories(@Query('limit') limit = 10) {
-    return `La categoría tiene el limite de ${limit}`;
+  @Get(':id/products/:productId')
+  getCategory(@Param('productId') productId: string, @Param('id') id: string) {
+    return `product ${productId} and ${id}`;
   }
 }
